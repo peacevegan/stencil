@@ -13,7 +13,11 @@ setup(
         description=DESCRIPTION,
         long_description=LONG_DESCRIPTION,
         packages=find_packages(),
-        install_requires=[], # add any additional packages that 
+        install_requires=[
+            "numpy >= 1.19.1",
+            "pandas >= 1.1.2",
+            "scikit-learn >= 0.23.2"
+        ], # add any additional packages that 
         # needs to be installed along with your package. Eg: 'caer'
         
         keywords=['python', 'first package'],
