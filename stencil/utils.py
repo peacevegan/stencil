@@ -6,10 +6,12 @@ import pdb
 import numpy as np
 import pandas as pd
 
+# type check
 from pandas.api.types import is_string_dtype, is_object_dtype
 from pandas.api.types import is_categorical_dtype, is_datetime64_dtype
 from pandas.api.types import is_int64_dtype, is_float_dtype
 
+# visualization
 from matplotlib import pyplot as plt
 
 # feature importance
@@ -171,7 +173,7 @@ def onehot(df, col):
 ####################
 
 # make histogram with dataframe and a list of columns
-def histogram(df, col=[], dtype=np.int, bins=5, cmin=-np.inf, cmax=np.inf,
+def histogram(df, col=[], dtype=np.int, bins=5, cmin=-np.inf, cmax=np.inf, 
               color=colors['blue'], title=None, xlabel=None, ylabel=None):
     s = df[col].values.astype(dtype)
     n, bin, patches = plt.hist(s.clip(min=cmin, max=cmax), 
@@ -181,21 +183,22 @@ def histogram(df, col=[], dtype=np.int, bins=5, cmin=-np.inf, cmax=np.inf,
     plt.show()
 
 def histogram_percentage(df, col=[], dtype=np.int, bins=5, 
-                         upper_bound=1, lower_bound=99, colors['blue'], 
-                         title=None, xlabel=None, ylabel=None)
+                         upper_bound=1, lower_bound=99, color=colors['blue'],
+                         title=None, xlabel=None, ylabel=None):
     # e.g. find middle 98% of a column
     upper, lower = np.percentile(df[col], [upper_bound, lower_bound]) 
-    clipped = np.clip(df.price, upper, lower)
-    fig,ax = plt.subplots()
-    ax.hist(clipped, bins=bins, color=colors['blue'])
+    clipped = np.clip(df[col], upper, lower)
+    s = clipped.values.astype(dtype)
+    fig, ax = plt.subplots()
+    ax.hist(s, bins=bins, color=color)
     ax.set_title(title)
     ax.set_xlabel(xlabel); ax.set_ylabel(ylabel)
     plt.show()
 
 
-##############
-## Metrics ###
-##############
+###############
+### Metrics ###
+###############
 
 def MAE(y_pred, y_true):
     return np.mean(np.abs(y_pred - y_true))
@@ -215,6 +218,8 @@ def test(X, y, model):
     nodes = rfnnodes(model)
     height = np.median(rfmaxdepths(model))
     print(f"OOB R^2 {oob:.5f} using {nodes:,d} tree nodes with {height} median tree height")
-    return rf, oob
+    return model, oob
+
+
 
 
